@@ -4,19 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Menu;
 use App\Repositories\MenuRepository;
+use App\Repositories\PortfolioRepository;
 use App\Repositories\SlidersRepository;
 use Config;
 use Illuminate\Http\Request;
 
 class IndexController extends SiteController
 {
-    public function __construct(SlidersRepository $slidersRepository)
+    public function __construct(SlidersRepository $slidersRepository, PortfolioRepository $portfolioRepository)
     {
         //передаем в родительский контроллер репо с меню
         parent::__construct(new MenuRepository(new Menu()));
 
         //получаем репозиторий для работы с моделью Slider
         $this->s_rep = $slidersRepository;
+        $this->p_rep = $portfolioRepository;
 
         //указываем главный шаблон
         $this->template =  env('THEME').'.index';
@@ -31,6 +33,13 @@ class IndexController extends SiteController
      */
     public function index()
     {
+        //получаем портфолио и рендерим
+        $portfolio = $this->getPortfolio();
+
+        $content = view(env('THEME').'.content')->with('portfolios', $portfolio)->render();
+        $this->vars = array_add($this->vars,'content', $content);
+
+
         //получаем коллекцию данных слайдера
         $sliderItems = $this->getSliders();
 
@@ -125,5 +134,11 @@ class IndexController extends SiteController
         });
 
         return $sliders;
+    }
+
+    private function getPortfolio()
+    {
+        $portfolio = $this->p_rep->get('*', Config::get('settings.home_port_count'));
+        return $portfolio;
     }
 }
