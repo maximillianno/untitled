@@ -4,13 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Menu;
 use App\Repositories\MenuRepository;
+use App\Repositories\SlidersRepository;
+use Config;
 use Illuminate\Http\Request;
 
 class IndexController extends SiteController
 {
-    public function __construct()
+    public function __construct(SlidersRepository $slidersRepository)
     {
+        //передаем в родительский контроллер репо с меню
         parent::__construct(new MenuRepository(new Menu()));
+
+        //получаем репозиторий для работы с моделью Slider
+        $this->s_rep = $slidersRepository;
+
+        //указываем главный шаблон
         $this->template =  env('THEME').'.index';
         $this->bar = 'right';
     }
@@ -23,7 +31,14 @@ class IndexController extends SiteController
      */
     public function index()
     {
-        //
+        //получаем коллекцию данных слайдера
+        $sliderItems = $this->getSliders();
+
+        //рендерим шаблон с данными
+        $sliders = view(env('THEME').'.slider')->with('sliders', $sliderItems)->render();
+
+        //передаем его для использования в index.blade
+        $this->vars = array_add($this->vars,'sliders', $sliders);
         return $this->renderOutput();
     }
 
@@ -91,5 +106,24 @@ class IndexController extends SiteController
     public function destroy($id)
     {
         //
+    }
+
+    /*
+     * получаем слайдер
+     */
+    private function getSliders()
+    {
+        $sliders = $this->s_rep->get();
+        if($sliders->isEmpty()) {
+            return false;
+        }
+
+        //функция для замены нужного поля каждого элемента коллекции
+        $sliders->transform(function($item, $key){
+            $item->img = Config::get('settings.slider_path').'/'.$item->img;
+            return $item;
+        });
+
+        return $sliders;
     }
 }

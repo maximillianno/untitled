@@ -6,5 +6,6 @@
  * Time: 16:25
  */
 return [
+    'slider_path' => 'slider-cycle',
 
 ];

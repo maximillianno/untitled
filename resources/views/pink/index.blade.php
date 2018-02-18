@@ -3,3 +3,6 @@
     {{--@include(env('THEME').'.navigation')--}}
     {!! $navigation !!}
 @endsection
+@section('slider')
+    {!! $sliders !!}
+@endsection
