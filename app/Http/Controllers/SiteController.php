@@ -32,6 +32,7 @@ class SiteController extends Controller
     protected $bar = false;
     /**
      * @var string
+     * Если она есть, то обрабатывается в renderOutput()
      */
     protected $contentLeftBar;
     protected $contentRightBar;
@@ -55,11 +56,18 @@ class SiteController extends Controller
 
 
         /**
-         * отрендеренная секция навигации
+         * отрендеренная секция навигации. В корневом, потому что используется везде
          */
         $navigation = view(env('THEME').'.navigation')->with('menu', $menu)->render();
         $this->vars = array_add($this->vars, 'navigation', $navigation);
 
+        //contentRightBar уже отрендерели в IndexController@index
+        if ($this->contentRightBar) {
+            $rightBar = view(env('THEME').'.rightBar')->with('contentRightBar', $this->contentRightBar)->render();
+            $this->vars = array_add($this->vars, 'rightBar', $rightBar);
+        }
+
+        //возвращаем шаблон с переменными
         return view($this->template)->with($this->vars);
     }
 

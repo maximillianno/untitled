@@ -9,3 +9,7 @@
 @section('content')
     {!! $content !!}
 @endsection
+@section('bar')
+    {!! $rightBar !!}
+    {{--@include('pink.indexBar')--}}
+@endsection

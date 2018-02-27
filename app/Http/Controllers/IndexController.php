@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Menu;
+use App\Repositories\ArticlesRepository;
 use App\Repositories\MenuRepository;
 use App\Repositories\PortfolioRepository;
 use App\Repositories\SlidersRepository;
@@ -11,7 +12,7 @@ use Illuminate\Http\Request;
 
 class IndexController extends SiteController
 {
-    public function __construct(SlidersRepository $slidersRepository, PortfolioRepository $portfolioRepository)
+    public function __construct(SlidersRepository $slidersRepository, PortfolioRepository $portfolioRepository, ArticlesRepository $articlesRepository)
     {
         //передаем в родительский контроллер репо с меню
         parent::__construct(new MenuRepository(new Menu()));
@@ -19,6 +20,7 @@ class IndexController extends SiteController
         //получаем репозиторий для работы с моделью Slider
         $this->s_rep = $slidersRepository;
         $this->p_rep = $portfolioRepository;
+        $this->a_rep = $articlesRepository;
 
         //указываем главный шаблон
         $this->template =  env('THEME').'.index';
@@ -33,7 +35,13 @@ class IndexController extends SiteController
      */
     public function index()
     {
-        //получаем портфолио и рендерим
+        //Работаем с right bar Остальное в методе рендерАутпут в родительском контроллере
+        $articles = $this->getArticles();
+//        dd($articles);
+
+        $this->contentRightBar = view(env('THEME').'.indexBar')->with('articles', $articles)->render();
+
+        //получаем портфолио и рендерим и передаем
         $portfolio = $this->getPortfolio();
 
         $content = view(env('THEME').'.content')->with('portfolios', $portfolio)->render();
@@ -41,13 +49,12 @@ class IndexController extends SiteController
 
 
         //получаем коллекцию данных слайдера
-        $sliderItems = $this->getSliders();
-
         //рендерим шаблон с данными
-        $sliders = view(env('THEME').'.slider')->with('sliders', $sliderItems)->render();
-
         //передаем его для использования в index.blade
+        $sliderItems = $this->getSliders();
+        $sliders = view(env('THEME').'.slider')->with('sliders', $sliderItems)->render();
         $this->vars = array_add($this->vars,'sliders', $sliders);
+
         return $this->renderOutput();
     }
 
@@ -140,5 +147,14 @@ class IndexController extends SiteController
     {
         $portfolio = $this->p_rep->get('*', Config::get('settings.home_port_count'));
         return $portfolio;
+    }
+
+    /**
+     * @return mixed
+     */
+    private function getArticles()
+    {
+        $articles = $this->a_rep->get(['title', 'img', 'created_at', 'alias'], Config::get('settings.home_articles_count'));
+        return $articles;
     }
 }
