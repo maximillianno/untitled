@@ -27,15 +27,21 @@ class SiteController extends Controller
     protected $vars = [];
 
     /**
-     * @var bool $bar
+     * @var string $bar
      */
-    protected $bar = false;
+    protected $bar = 'no';
     /**
      * @var string
      * Если она есть, то обрабатывается в renderOutput()
      */
     protected $contentLeftBar;
     protected $contentRightBar;
+
+    //метатеги
+    protected $title;
+    protected $keywords;
+    protected $meta_desc;
+
 
     public function __construct(MenuRepository $menuRepository)
     {
@@ -66,6 +72,20 @@ class SiteController extends Controller
             $rightBar = view(env('THEME').'.rightBar')->with('contentRightBar', $this->contentRightBar)->render();
             $this->vars = array_add($this->vars, 'rightBar', $rightBar);
         }
+
+        //правый бар или левый
+        $this->vars = array_add($this->vars, 'bar', $this->bar);
+
+        //переменные метатегов
+        $this->vars = array_add($this->vars, 'title', $this->title);
+        $this->vars = array_add($this->vars, 'keywords', $this->keywords);
+        $this->vars = array_add($this->vars, 'meta_desc', $this->meta_desc);
+
+
+
+        $footer = view(env('THEME').'.footer');
+        $this->vars = array_add($this->vars, 'footer', $footer);
+
 
         //возвращаем шаблон с переменными
         return view($this->template)->with($this->vars);

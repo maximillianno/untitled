@@ -13,3 +13,6 @@
     {!! $rightBar !!}
     {{--@include('pink.indexBar')--}}
 @endsection
+@section('footer')
+    {!! $footer !!}
+@endsection

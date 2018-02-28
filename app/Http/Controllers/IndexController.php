@@ -37,11 +37,10 @@ class IndexController extends SiteController
     {
         //Работаем с right bar Остальное в методе рендерАутпут в родительском контроллере
         $articles = $this->getArticles();
-//        dd($articles);
 
         $this->contentRightBar = view(env('THEME').'.indexBar')->with('articles', $articles)->render();
 
-        //получаем портфолио и рендерим и передаем
+        //получаем портфолио и рендерим и передаем $content
         $portfolio = $this->getPortfolio();
 
         $content = view(env('THEME').'.content')->with('portfolios', $portfolio)->render();
@@ -54,6 +53,12 @@ class IndexController extends SiteController
         $sliderItems = $this->getSliders();
         $sliders = view(env('THEME').'.slider')->with('sliders', $sliderItems)->render();
         $this->vars = array_add($this->vars,'sliders', $sliders);
+
+        //переопределяем метатеги
+        $this->meta_desc = 'Home Page';
+        $this->title = 'Home Page';
+        $this->keywords = 'Home Page';
+
 
         return $this->renderOutput();
     }
