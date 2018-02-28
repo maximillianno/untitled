@@ -2,10 +2,28 @@
 
 namespace App\Http\Controllers;
 
+use App\Menu;
+use App\Repositories\ArticlesRepository;
+use App\Repositories\MenuRepository;
+use App\Repositories\PortfolioRepository;
 use Illuminate\Http\Request;
 
-class ArticlesController extends Controller
+class ArticlesController extends SiteController
 {
+    public function __construct(PortfolioRepository $portfolioRepository, ArticlesRepository $articlesRepository)
+    {
+        //передаем в родительский контроллер репо с меню
+        parent::__construct(new MenuRepository(new Menu()));
+
+
+        $this->p_rep = $portfolioRepository;
+        $this->a_rep = $articlesRepository;
+
+        //указываем главный шаблон
+        $this->template =  env('THEME').'.articles';
+        $this->bar = 'right';
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -14,6 +32,10 @@ class ArticlesController extends Controller
     public function index()
     {
         //
+        $articles = $this->getArticles();
+
+
+        return $this->renderOutput();
     }
 
     /**
@@ -80,5 +102,16 @@ class ArticlesController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    private function getArticles($alias = false)
+    {
+        $articles = $this->a_rep->get(['title', 'alias', 'created_at', 'img', 'desc'], false, true );
+//        if ($articles) {
+//            $articles->load('user', 'category', 'comments');
+//        }
+
+        return $articles;
+
     }
 }
