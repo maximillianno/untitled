@@ -31,9 +31,12 @@ class ArticlesController extends SiteController
      */
     public function index()
     {
-        //
+        //получаем статьи с пагинацией
         $articles = $this->getArticles();
 
+        //рендерим контент и передаем в макет
+        $content = view(env('THEME').'.articles_content')->with('articles', $articles)->render();
+        $this->vars = array_add($this->vars,'content', $content);
 
         return $this->renderOutput();
     }
@@ -106,7 +109,9 @@ class ArticlesController extends SiteController
 
     private function getArticles($alias = false)
     {
-        $articles = $this->a_rep->get(['title', 'alias', 'created_at', 'img', 'desc'], false, true );
+        $articles = $this->a_rep->get(['id', 'title', 'alias', 'created_at', 'img', 'desc', 'user_id', 'category_id'], false, true );
+
+        //для того, чтобы не плодить запросы
 //        if ($articles) {
 //            $articles->load('user', 'category', 'comments');
 //        }
