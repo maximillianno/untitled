@@ -109,7 +109,7 @@ class ArticlesController extends SiteController
 
     private function getArticles($alias = false)
     {
-        $articles = $this->a_rep->get(['id', 'title', 'alias', 'created_at', 'img', 'desc', 'user_id', 'category_id'], false, true );
+        $articles    = $this->a_rep->get(['id', 'title', 'alias', 'created_at', 'img', 'desc', 'user_id', 'category_id'], false, true );
 
         //для того, чтобы не плодить запросы
 //        if ($articles) {
