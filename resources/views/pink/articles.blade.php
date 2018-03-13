@@ -7,7 +7,7 @@
     {!! $content !!}
 @endsection
 @section('bar')
-    {!! $rightBar or '' !!}
+    {!! $rightBar !!}
     {{--@include('pink.indexBar')--}}
 @endsection
 @section('footer')

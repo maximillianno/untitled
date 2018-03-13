@@ -4,13 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Menu;
 use App\Repositories\ArticlesRepository;
+use App\Repositories\CommentsRepository;
 use App\Repositories\MenuRepository;
 use App\Repositories\PortfolioRepository;
 use Illuminate\Http\Request;
 
 class ArticlesController extends SiteController
 {
-    public function __construct(PortfolioRepository $portfolioRepository, ArticlesRepository $articlesRepository)
+    private $c_rep;
+
+    public function __construct(PortfolioRepository $portfolioRepository, ArticlesRepository $articlesRepository, CommentsRepository $commentsRepository)
     {
         //передаем в родительский контроллер репо с меню
         parent::__construct(new MenuRepository(new Menu()));
@@ -18,6 +21,7 @@ class ArticlesController extends SiteController
 
         $this->p_rep = $portfolioRepository;
         $this->a_rep = $articlesRepository;
+        $this->c_rep = $commentsRepository;
 
         //указываем главный шаблон
         $this->template =  env('THEME').'.articles';
@@ -33,6 +37,13 @@ class ArticlesController extends SiteController
     {
         //получаем статьи с пагинацией
         $articles = $this->getArticles();
+
+        //для правого сайдбара получаем комменты и портфолио
+        $comments = $this->getComments(config('settings.recent_comments'));
+        $portfolios = $this->getPortfolios(config('settings.recent_portfolios'));
+
+        //
+        $this->contentRightBar = view(env('THEME').'.articlesBar')->with(['comments' => $comments, 'portfolios' => $portfolios])->render();
 
         //рендерим контент и передаем в макет
         $content = view(env('THEME').'.articles_content')->with('articles', $articles)->render();
@@ -117,6 +128,22 @@ class ArticlesController extends SiteController
 //        }
 
         return $articles;
+
+    }
+
+    /*
+     * @return collection
+     */
+    private function getComments($take)
+    {
+        $comments = $this->c_rep->get(['text', 'name', 'email', 'site', 'article_id' , 'user_id'], $take);
+        return $comments;
+    }
+
+    private function getPortfolios($take)
+    {
+        $portfolios = $this->p_rep->get(['title', 'text', 'alias', 'customer', 'img', 'filter_alias'], $take);
+        return $portfolios;
 
     }
 }
