@@ -21,7 +21,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('/', 'IndexController', [
     'only' => ['index'],
-    //'names' => ['index' => 'home'],
+    'names' => ['index' => 'homes'],
 ]);
 
 Route::resource('/portfolios', 'PortfolioController', [
