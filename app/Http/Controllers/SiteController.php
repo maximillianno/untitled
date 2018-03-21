@@ -97,6 +97,7 @@ class SiteController extends Controller
     private function getMenu()
     {
         $menu = $this->m_rep->get();
+//        dd($menu);
         $lavMenu = new Menu();
         $mBuilder = $lavMenu->make('MyNav', function ($m) use ($menu){
             foreach ($menu as $item) {

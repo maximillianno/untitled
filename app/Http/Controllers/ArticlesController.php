@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Category;
 use App\Menu;
 use App\Repositories\ArticlesRepository;
 use App\Repositories\CommentsRepository;
@@ -33,10 +34,10 @@ class ArticlesController extends SiteController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($catAlias = false)
     {
         //получаем статьи с пагинацией
-        $articles = $this->getArticles();
+        $articles = $this->getArticles($catAlias);
 
         //для правого сайдбара получаем комменты и портфолио
         $comments = $this->getComments(config('settings.recent_comments'));
@@ -120,7 +121,16 @@ class ArticlesController extends SiteController
 
     private function getArticles($alias = false)
     {
-        $articles    = $this->a_rep->get(['id', 'title', 'alias', 'created_at', 'img', 'desc', 'user_id', 'category_id'], false, true );
+        $where = false;
+        if ($alias){
+//            dd($alias);
+            $id = Category::where('alias', $alias)->first()->id;
+//            dd($id);
+            $where = ['category_id', $id];
+
+        }
+
+        $articles    = $this->a_rep->get(['id', 'title', 'alias', 'created_at', 'img', 'desc', 'user_id', 'category_id'], false, true , $where);
 
         //для того, чтобы не плодить запросы
         if ($articles) {
