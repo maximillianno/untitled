@@ -84,6 +84,11 @@ class ArticlesController extends SiteController
     {
         //получаем статью
         $article = $this->a_rep->one($alias, ['comments' => true]);
+
+        //из JSON без ебли с transform - потому что тут 1 запись а не коллекция
+        if ($article){
+            $article->img = json_decode($article->img);
+        }
 //        dd($article);
         $content = view(env('THEME').'.articleContent')->with('article', $article)->render();
         $this->vars = array_add($this->vars, 'content', $content);

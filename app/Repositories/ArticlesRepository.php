@@ -21,6 +21,8 @@ class ArticlesRepository extends Repository
     {
         $article = parent::one($alias, $attr);
 
+
+
         if ($article && $attr){
             $article->load('comments');
             $article->comments->load('user');
