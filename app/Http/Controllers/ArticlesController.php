@@ -80,9 +80,21 @@ class ArticlesController extends SiteController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($alias = false)
     {
+        //получаем статью
+        $article = $this->a_rep->one($alias, ['comments' => true]);
+//        dd($article);
+        $content = view(env('THEME').'.articleContent')->with('article', $article)->render();
+        $this->vars = array_add($this->vars, 'content', $content);
+
+        //для правого сайдбара получаем комменты и портфолио
+        $comments = $this->getComments(config('settings.recent_comments'));
+        $portfolios = $this->getPortfolios(config('settings.recent_portfolios'));
         //
+        $this->contentRightBar = view(env('THEME').'.articlesBar')->with(['comments' => $comments, 'portfolios' => $portfolios])->render();
+
+        return $this->renderOutput();
     }
 
     /**

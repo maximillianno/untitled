@@ -10,7 +10,7 @@
                     <div class="text">
                         <a href="{{ route('portfolios.show', ['alias' => $portfolio->alias]) }}" title="{!! $portfolio->title !!}" class="title">{!! $portfolio->title !!}</a>
                         <p>{!! str_limit($portfolio->text, 130) !!}</p>
-                        <a class="read-more" href="article.html">&rarr; {{ Lang::get('ru.read_more') }}</a>
+                        <a class="read-more" href="articleContent.blade.php">&rarr; {{ Lang::get('ru.read_more') }}</a>
                     </div>
                 </div>
             @endforeach
@@ -36,7 +36,7 @@
                 <span class="author"><strong><a href="#">{{isset($comment->user)? $comment->user->name : $comment->name}}</a></strong> in</span>
                 <a class="title" href="{{ route('articles.show', ['alias' => $comment->article->alias]) }}">{{ $comment->article->title }}</a>
                 <p class="comment">
-                    {{ $comment->text }}<a class="goto" href="article.html">&#187;</a>
+                    {{ $comment->text }}<a class="goto" href="articleContent.blade.php">&#187;</a>
                 </p>
             </div>
 
