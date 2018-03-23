@@ -89,7 +89,7 @@ class ArticlesController extends SiteController
         if ($article){
             $article->img = json_decode($article->img);
         }
-//        dd($article);
+//        dd($article->comments->groupBy('parent_id'));
         $content = view(env('THEME').'.articleContent')->with('article', $article)->render();
         $this->vars = array_add($this->vars, 'content', $content);
 
@@ -136,6 +136,10 @@ class ArticlesController extends SiteController
         //
     }
 
+    /**
+     * @param bool $alias
+     * @return mixed
+     */
     private function getArticles($alias = false)
     {
         $where = false;
@@ -147,6 +151,9 @@ class ArticlesController extends SiteController
 
         }
 
+        /**
+         *
+         */
         $articles    = $this->a_rep->get(['id', 'title', 'alias', 'created_at', 'img', 'desc', 'user_id', 'category_id'], false, true , $where);
 
         //для того, чтобы не плодить запросы
@@ -158,8 +165,9 @@ class ArticlesController extends SiteController
 
     }
 
-    /*
-     * @return collection
+    /**
+     * @param $take
+     * @return mixed
      */
     private function getComments($take)
     {
@@ -170,6 +178,10 @@ class ArticlesController extends SiteController
         return $comments;
     }
 
+    /**
+     * @param $take
+     * @return mixed
+     */
     private function getPortfolios($take)
     {
         $portfolios = $this->p_rep->get(['title', 'text', 'alias', 'customer', 'img', 'filter_alias'], $take);
