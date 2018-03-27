@@ -29,6 +29,7 @@
 
     <meta name="keywords" content="{{ $keywords or ''}}" />
     <meta name="description" content="{{$meta_desc or  ''}}" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- [favicon] begin -->
     <link rel="shortcut icon" type="image/x-icon" href="{{asset(env('THEME'))}}/images/favicon.ico" />
