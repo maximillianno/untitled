@@ -18,8 +18,43 @@ jQuery(document).ready(function($){
                     },
                     type: 'POST',
                     datatype: 'JSON',
-                    success: function () {
+                    success: function (html) {
+
+
+                        if(html.error){
+
+                            $('.wrap_result').css('color', 'red').append('<br><strong>Ошибка: </strong>' + html.error.join('<br>'));
+                            $('.wrap_result').delay(2000).fadeOut(500);
+
+
+
+                        } else  {
+
+                            $('.wrap_result')
+                                .append('<br><strong>Сохранено!</strong>')
+                                .delay(2000)
+                                .fadeOut(500, function () {
+                                    if (html.data.parent_id > 0) {
+                                        comParent.parents('div#respond').prev().after('<ul class="children">' + html.comment + '</ul>');
+
+                                    } else {
+                                        if (document.getElementById("blockofcomments")) {
+
+                                            // alert(document.getElementById("blockofcomments"));
+                                            $('ol.commentlist').append(html.comment);
+                                        } else {
+                                            $('#respond').before('<ol class="commentlist group">' + html.comment + '</ol>');
+                                        }
+
+                                    }
+
+                                    $('#cancel-comment-reply-link').click();
+                                });
+                            $('#cancel-comment-reply-link').click();
+                        }
                         
+
+
                     },
                     error: function () {
 
