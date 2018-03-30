@@ -40,10 +40,11 @@ class CommentController extends SiteController
         //формируем данные для записи коммента в базу
         $data = $request->except('_token', 'comment_post_id', 'comment_parent');
         $data['article_id'] = $request->input('comment_post_id');
+        //$data['parent_id'] = $request->input('comment_parent');
         //нельзя использовать isset()... для выражений
         $data['parent_id'] = (null !== $request->input('comment_parent')) ? $request->input('comment_parent') : '0';
 //        dd($data);
-        print_r($data);
+//        print_r($data);
 
         //Валидируем поля
         $validator = \Validator::make($data, [
@@ -77,7 +78,7 @@ class CommentController extends SiteController
         $data['name'] = (!empty($data['name'])) ? $data['name'] : $comment->user->name;
         $data['hash'] = md5($data['email']);
         $viewComment = view(env('THEME').'.content_one_comment')->with('data', $data)->render();
-        return \Response::json(['success' => true, 'comment' => $viewComment]);
+        return \Response::json(['success' => true, 'comment' => $viewComment, 'data' => $data]);
 
     }
 
