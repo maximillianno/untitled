@@ -18,5 +18,15 @@ class PortfolioRepository extends Repository
         $this->model = $portfolio;
     }
 
+    //переопределенный метод для работы с картинками, чтобы не делать это в контроллере
+    public function one($alias, $attr = [])
+    {
+        $portfolio = parent::one($alias, $attr);
+        if ($portfolio->img){
+            $portfolio->img = json_decode($portfolio->img);
+        }
+        return $portfolio;
+    }
+
 
 }

@@ -76,6 +76,30 @@ class PortfolioController extends SiteController
     public function show($id)
     {
         //
+
+        //Главное портфолио
+        $mainPortfolio = $this->p_rep->one($id);
+
+        $this->title = $mainPortfolio->title;
+        $this->keywords = $mainPortfolio->keywords;
+        $this->meta_desc = $mainPortfolio->meta_desc;
+
+
+        //Преобразование путей картинок  в свойства - вынесли в репозиторий
+//        if ($mainPortfolio->img){
+//            $mainPortfolio->img = json_decode($mainPortfolio->img);
+//        }
+
+        //получаем остальные портфолио
+        $portfolios = $this->getPortfolios(config('settings.other_portfolios'), false);
+//        dd($portfolios);
+
+        $content = view(env('THEME').'.portfolioContent')->with(['mainPortfolio' => $mainPortfolio, 'portfolios' => $portfolios])->render();
+        $this->vars = array_add($this->vars, 'content', $content);
+
+        //
+
+        return $this->renderOutput();
     }
 
     /**
@@ -112,9 +136,9 @@ class PortfolioController extends SiteController
         //
     }
 
-    private function getPortfolios()
+    private function getPortfolios($take = false, $pagination = true)
     {
-        $portfolios = $this->p_rep->get(['*'], false, true);
+        $portfolios = $this->p_rep->get(['*'], $take, $pagination);
         if ($portfolios) {
             $portfolios->load('filter');
         }
