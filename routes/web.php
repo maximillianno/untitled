@@ -33,5 +33,8 @@ Route::resource('/articles', 'ArticlesController', [
     'parameters' => [
         'articles' => 'alias']]);
 //страницы категорий
-Route::get('articles/cat/{cat_alias?}', ['uses' => 'ArticlesController@index', 'as' => 'articlesCat']);
+Route::get('articles/cat/{cat_alias?}', ['uses' => 'ArticlesController@index', 'as' => 'articlesCat'])->where('cat_alias','[\w-]+');
+//маршрут сохранения комментария
 Route::resource('comment', 'CommentController', ['only' => ['store']]);
+//для контактов
+Route::match( ['get', 'post'],'contacts',['uses' => 'ContactController@index', 'as' => 'contacts']);

@@ -73,6 +73,12 @@ class SiteController extends Controller
             $this->vars = array_add($this->vars, 'rightBar', $rightBar);
         }
 
+        //contentLeftBar - в контактах
+        if ($this->contentLeftBar) {
+            $leftBar = view(env('THEME').'.leftBar')->with('contentLeftBar', $this->contentLeftBar)->render();
+            $this->vars = array_add($this->vars, 'leftBar', $leftBar);
+        }
+
         //правый бар или левый
         $this->vars = array_add($this->vars, 'bar', $this->bar);
 
