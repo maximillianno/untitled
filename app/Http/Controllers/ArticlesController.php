@@ -89,6 +89,8 @@ class ArticlesController extends SiteController
         if ($article){
             $article->img = json_decode($article->img);
         }
+        $this->title = $article->title;
+        $this->keywords = $article->keywords;
 //        dd($article->comments->groupBy('parent_id'));
         $content = view(env('THEME').'.articleContent')->with('article', $article)->render();
         $this->vars = array_add($this->vars, 'content', $content);
@@ -154,7 +156,7 @@ class ArticlesController extends SiteController
         /**
          *
          */
-        $articles    = $this->a_rep->get(['id', 'title', 'alias', 'created_at', 'img', 'desc', 'user_id', 'category_id'], false, true , $where);
+        $articles    = $this->a_rep->get(['id', 'title', 'alias', 'created_at', 'img', 'desc', 'user_id', 'category_id', 'title', 'keywords'], false, true , $where);
 
         //для того, чтобы не плодить запросы
         if ($articles) {

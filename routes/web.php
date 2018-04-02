@@ -19,16 +19,19 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+//главная
 Route::resource('/', 'IndexController', [
     'only' => ['index'],
     'names' => ['index' => 'homes'],
 ]);
-
+//страницы портфолио
 Route::resource('/portfolios', 'PortfolioController', [
     'parameters' => [
         'portfolios' => 'alias']]);
+//страницы статей
 Route::resource('/articles', 'ArticlesController', [
     'parameters' => [
         'articles' => 'alias']]);
+//страницы категорий
 Route::get('articles/cat/{cat_alias?}', ['uses' => 'ArticlesController@index', 'as' => 'articlesCat']);
 Route::resource('comment', 'CommentController', ['only' => ['store']]);
