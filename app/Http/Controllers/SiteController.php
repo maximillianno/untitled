@@ -57,6 +57,7 @@ class SiteController extends Controller
      */
     protected function renderOutput(){
 
+        //TODO:  combine contentLeftBar and contentRightBar
         $menu = $this->getMenu();
 //        dd($menu);
 

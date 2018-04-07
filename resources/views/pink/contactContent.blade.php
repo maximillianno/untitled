@@ -1,6 +1,20 @@
+@if(count($errors) > 0)
+        <div class="box error-box">
+            @foreach($errors->all() as $error)
+                <p>{{ $error }}</p>
+            @endforeach
+        </div>
+@endif
+    @if(session('status'))
+        <div class="box success-box">
+            {{ session('status') }}
+        </div>
+    @endif
+
+
 <div id="content-page" class="content group">
     <div class="hentry group">
-        <form id="contact-form-contact-us" class="contact-form" method="post" action="sendmail.PHP" enctype="multipart/form-data">
+        <form id="contact-form-contact-us" class="contact-form" method="post" action="{{ route('contacts') }}" enctype="multipart/form-data">
             <div class="usermessagea"></div>
             <fieldset>
                 <ul>
@@ -24,10 +38,11 @@
                         <label for="message-contact-us">
                             <span class="label">Message</span>
                         </label>
-                        <div class="input-prepend"><span class="add-on"><i class="icon-pencil"></i></span><textarea name="message" id="message-contact-us" rows="8" cols="30" class="required"></textarea></div>
+                        <div class="input-prepend"><span class="add-on"><i class="icon-pencil"></i></span><textarea name="text" id="message-contact-us" rows="8" cols="30" class="required"></textarea></div>
                         <div class="msg-error"></div>
                     </li>
                     <li class="submit-button">
+                        {{ csrf_field() }}
                         <input type="text" name="yit_bot" id="yit_bot" />
                         <input type="hidden" name="yit_action" value="sendmail" id="yit_action" />
                         <input type="hidden" name="yit_referer" value="http://yourinspirationtheme.com/demo/pinkrio/corporate/contact/" />
