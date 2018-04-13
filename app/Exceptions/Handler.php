@@ -36,7 +36,15 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $exception)
     {
-        parent::report($exception);
+
+        if ($this->isHttpException($exception)){
+            $statusCode = $exception->getStatusCode();
+
+            if ($statusCode == 404){
+                return response()->view('errors.404',['bar' => 'no', 'title' => 'Страница не найдена']);
+            }
+        }
+        //parent::report($exception);
     }
 
     /**

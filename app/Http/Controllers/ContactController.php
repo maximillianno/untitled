@@ -37,13 +37,13 @@ class ContactController extends SiteController
             ], $messages);
 
             $data = $request->all();
-            //TODO: uncomment mail sender
-//            $result = \Mail::send(env('THEME').'.email', ['data' => $data], function ($m) use ($data){
-//                $mailAdmin = env('mail_admin');
-////                $m->from($data['email'], $data['name']);
+            //TODO: uncomment mail sender and tune on gmail
+            $result = \Mail::send(env('THEME').'.email', ['data' => $data], function ($m) use ($data){
+                $mailAdmin = env('mail_admin');
+//                $m->from($data['email'], $data['name']);
 //                $m->from($mailAdmin, $data['name']);
-//                $m->to($mailAdmin, 'Mr. Admin')->subject($data['email']);
-//            });
+//                $m->to('Max Starostin <maxus.star@gmail.com>')->subject('Hello Max Starostin');
+            });
 
 
             return redirect()->route('contacts')->with('status', 'email is send');
