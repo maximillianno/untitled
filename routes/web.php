@@ -30,7 +30,7 @@ Route::resource('/portfolios', 'PortfolioController', [
     'parameters' => [
         'portfolios' => 'alias']]);
 //страницы статей
-Route::resource('/articles', 'ArticlesController', [
+Route::resource('articles', 'ArticlesController', [
     'parameters' => [
         'articles' => 'alias']]);
 //страницы категорий
@@ -40,3 +40,12 @@ Route::resource('comment', 'CommentController', ['only' => ['store']]);
 //для контактов
 Route::match( ['get', 'post'],'contacts',['uses' => 'ContactController@index', 'as' => 'contacts']);
 //Route::auth();
+//Группа маршрутов админки
+//Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function (){
+//    Route::get('/', ['uses' => 'Admin\IndexController@index', 'as' => 'admin_index']);
+//    Route::resource('articles', 'Admin\ArticlesController');
+//});
+Route::name('admin.')->prefix('admin')->middleware(['auth'])->group(function () {
+    Route::get('/', ['uses' => 'Admin\IndexController@index', 'as' => 'admin_index']);
+    Route::resource('articles', 'Admin\ArticlesController');
+});
