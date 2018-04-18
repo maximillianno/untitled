@@ -60,6 +60,7 @@ class ContactController extends SiteController
 
 
         $this->title = "Контакты";
+        
 
         $this->contentLeftBar = view(env('THEME').'.contactBar')->render();
 

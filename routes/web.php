@@ -16,6 +16,7 @@
 //});
 
 Auth::routes();
+Route::get('logout','Auth\LoginController@logout');
 
 Route::get('/home', 'HomeController@index')->name('home');
 
@@ -38,3 +39,4 @@ Route::get('articles/cat/{cat_alias?}', ['uses' => 'ArticlesController@index', '
 Route::resource('comment', 'CommentController', ['only' => ['store']]);
 //для контактов
 Route::match( ['get', 'post'],'contacts',['uses' => 'ContactController@index', 'as' => 'contacts']);
+//Route::auth();
