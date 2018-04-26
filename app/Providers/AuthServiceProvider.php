@@ -25,12 +25,18 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-//        dd($this);
+        //Правило для доступа к аминке
         \Gate::define('VIEW_ADMIN', function ($user){
 
-            return $user->canDo(['VIEW_ADMIN', 'ADD_ARTICLES'], true);
+            return $user->canDo('VIEW_ADMIN');
         });
 
-        //
+        //для доступа к admin.articles
+        \Gate::define('VIEW_ADMIN_ARTICLES', function ($user){
+
+            return $user->canDo('VIEW_ADMIN_ARTICLES');
+        });
+
+        //VIEW_ADMIN_ARTICLES
     }
 }
