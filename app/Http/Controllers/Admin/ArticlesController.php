@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Article;
+use App\Category;
 use App\Repositories\ArticlesRepository;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -32,7 +34,6 @@ class ArticlesController extends AdminController
         $this->title = 'Менеджер статей';
         $articles = $this->getArticles();
         $this->content = view(env('THEME').'.admin.articles_content')->with('articles', $articles)->render();
-        $this->vars = array_add($this->vars, 'content', $this->content);
 
 
         return $this->renderOutput();
@@ -45,7 +46,28 @@ class ArticlesController extends AdminController
      */
     public function create()
     {
-        //
+        //проверка на создание не требует объекта Article поэтому тут Article::class
+        if (\Gate::denies('create', Article::class)){
+            abort(403);
+        }
+        $this->title = 'Добавить новый материал';
+
+        $categories = Category::select(['title', 'alias', 'parent_id', 'id'])->get();
+
+
+        //формируем массив для тега select
+        $list = [];
+        foreach ($categories as $category) {
+            if ($category->parent_id == 0){
+                $list[$category->title] = [];
+            } else {
+                $list[$categories->where('id', $category->parent_id)->first()->title][$category->id] = $category->title;
+            }
+
+        }
+        $this->content = view(env('THEME').'.admin.articles_create_content')->with('categories', $list)->render();
+        return $this->renderOutput();
+
     }
 
     /**
