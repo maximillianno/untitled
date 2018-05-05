@@ -30,5 +30,27 @@ class ArticlesRepository extends Repository
         return $article;
     }
 
+    public function addArticle($request)
+    {
+        //Проверяется в реквесте
+//        if (\Gate::denies('create', $this->model)){
+//            abort(403);
+//        }
+        $data = $request->except('_token', 'image');
+
+
+        //Обработка alias
+        if(!$data['alias']){
+            $data['alias'] = $this->transliterate($data['title']);
+        } else {
+
+
+        }
+        dd($data);
+
+    }
+
+
+
 
 }

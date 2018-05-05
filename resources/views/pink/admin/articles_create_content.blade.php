@@ -11,7 +11,7 @@
                     <span class="sublabel">Заголовок материала</span><br />
                 </label>
                 <div class="input-prepend"><span class="add-on"><i class="icon-user"></i></span>
-                    {!! Form::text('title',isset($article->title) ? $article->title  : old('title'), ['placeholder'=>'Введите название страницы']) !!}
+                    {!! Form::text('title',isset($article->title) ? $article->title  : old('title'), ['placeholder'=>'Введите название страницы title']) !!}
                 </div>
             </li>
 
@@ -60,7 +60,7 @@
 
             <li class="textarea-field">
                 <label for="message-contact-us">
-                    <span class="label">Описание:</span>
+                    <span class="label">Текст статьи:</span>
                 </label>
                 <div class="input-prepend"><span class="add-on"><i class="icon-pencil"></i></span>
                     {!! Form::textarea('text', isset($article->text) ? $article->text  : old('text'), ['id'=>'editor2','class' => 'form-control','placeholder'=>'Введите текст страницы']) !!}
