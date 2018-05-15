@@ -80,11 +80,16 @@ class ArticlesController extends AdminController
      */
     public function store(ArticleRequest $request)
     {
-        //
+        //либо массив с ошибкой либо со статусом
         $result = $this->a_rep->addArticle($request);
-        if (is_array($result) && $result['error']){
+
+
+        //в сессию записывается error
+        if (is_array($result) && !empty($result['error'])){
             return back()->with($result);
         }
+
+        //в данном случае ->with($result) записывается в сессию (У нас status)
         return redirect('/admin')->with($result);
         dd($request);
     }

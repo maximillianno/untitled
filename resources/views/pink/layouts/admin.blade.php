@@ -79,6 +79,7 @@
         <!-- END HEADER -->
         <!-- START PRIMARY -->
 
+        {{-- Это передается валидатором --}}
         @if (count($errors) > 0)
             <div class="box error-box">
 
@@ -95,8 +96,12 @@
             </div>
         @endif
 
+
+
+        {{-- Эта хуйня работает когда редирект->with()  это мы сделали error, а валидатор делает errors --}}
         @if (session('error'))
             <div class="box error-box">
+                <p>Это из сессии</p>
                 {{ session('error') }}
             </div>
         @endif

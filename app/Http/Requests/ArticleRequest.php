@@ -33,7 +33,7 @@ class ArticleRequest extends FormRequest
 
     protected function getValidatorInstance()
     {
-        $validator = parent::getValidatorInstance(); // TODO: Проверить валидацию alias
+        $validator = parent::getValidatorInstance(); //
         $validator->sometimes('alias', 'unique:articles|max:255', function ($input){
            return $input->alias;
 //           return !empty($input->alias);
