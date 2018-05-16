@@ -43,6 +43,7 @@ class ArticlePolicy
     public function update(User $user, Article $article)
     {
         //
+        return $user->canDo('UPDATE_ARTICLES');
     }
 
     /**

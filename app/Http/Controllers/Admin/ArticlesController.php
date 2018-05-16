@@ -80,6 +80,8 @@ class ArticlesController extends AdminController
      */
     public function store(ArticleRequest $request)
     {
+        //Авторизация в реквесте
+
         //либо массив с ошибкой либо со статусом
         $result = $this->a_rep->addArticle($request);
 
@@ -111,9 +113,33 @@ class ArticlesController extends AdminController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Article $article)
     {
-        //
+        //$article = Article::where('alias', $alias);
+        if (\Gate::denies('update', new Article)){
+            abort(403);
+        }
+        //Формируем данные для передачи в шаблон
+        $article->img = json_decode($article->img);
+        $this->title = 'Редактирование материала'.$article->title;
+
+        $categories = Category::select(['title', 'alias', 'parent_id', 'id'])->get();
+
+
+        //формируем массив для тега select смотреть нужный в доке laravelCollective
+        $list = [];
+        foreach ($categories as $category) {
+            if ($category->parent_id == 0){
+                $list[$category->title] = [];
+            } else {
+                $list[$categories->where('id', $category->parent_id)->first()->title][$category->id] = $category->title;
+            }
+        }
+        $this->content = view(env('THEME').'.admin.articles_create_content')->with(['categories' => $list, 'article' => $article])->render();
+        return $this->renderOutput();
+
+
+        dd($article);
     }
 
     /**
