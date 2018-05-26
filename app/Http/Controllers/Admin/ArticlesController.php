@@ -149,9 +149,23 @@ class ArticlesController extends AdminController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ArticleRequest $request, Article $article)
     {
         //
+        //Авторизация в реквесте
+
+        //либо массив с ошибкой либо со статусом
+        $result = $this->a_rep->updateArticle($request, $article);
+
+
+        //в сессию записывается error
+        if (is_array($result) && !empty($result['error'])){
+            return back()->with($result);
+        }
+
+        //в данном случае ->with($result) записывается в сессию (У нас status)
+        return redirect('/admin')->with($result);
+//        $data = $request->except([''])
     }
 
     /**

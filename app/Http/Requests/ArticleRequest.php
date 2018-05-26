@@ -34,9 +34,18 @@ class ArticleRequest extends FormRequest
     protected function getValidatorInstance()
     {
         $validator = parent::getValidatorInstance(); //
+
+
         $validator->sometimes('alias', 'unique:articles|max:255', function ($input){
-           return $input->alias;
-//           return !empty($input->alias);
+
+            //Если метод Update а не Store
+            if ($this->route()->hasParameter('article')){
+                //Возвращает объект модели Article
+                $model = $this->route()->parameter('article');
+                return ($model->alias !== $input->alias) && !empty($input->alias);
+
+            }
+            return !empty($input->alias);
         });
 
         return $validator;
