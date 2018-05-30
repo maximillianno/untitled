@@ -174,9 +174,24 @@ class ArticlesController extends AdminController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Article $article)
     {
         //
+
+
+        //либо массив с ошибкой либо со статусом
+        $result = $this->a_rep->deleteArticle($article);
+
+
+
+        //в сессию записывается error
+        if (is_array($result) && !empty($result['error'])){
+            return back()->with($result);
+        }
+
+        //в данном случае ->with($result) записывается в сессию (У нас status)
+        return redirect('/admin')->with($result);
+//        $data = $request->except([''])
     }
 
     private function getArticles()

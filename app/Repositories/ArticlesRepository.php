@@ -146,5 +146,20 @@ class ArticlesRepository extends Repository
         };
     }
 
+    public function deleteArticle($article)
+    {
+        if (\Gate::denies('delete', $article)){
+            abort(403);
+        }
+
+        //Удаляем комменты
+        $article->comments()->delete();
+
+        //Удаляем статью
+        if($article->delete()){
+            return ['status' => 'Материал удален'];
+        }
+    }
+
 
 }

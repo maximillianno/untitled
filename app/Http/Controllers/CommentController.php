@@ -54,9 +54,11 @@ class CommentController extends SiteController
         ]);
         //Некоторые валидируем только при гостевом входе
         $validator->sometimes(['name', 'email'], 'required|max:255', function ($input){
+//            dd($input);
             return !Auth::check();
         });
         //передаем ошибки
+        //dd($validator->errors()->all());
         if ($validator->fails()){
             return \Response::json(['error' => $validator->errors()->all()]);
         }
@@ -67,6 +69,8 @@ class CommentController extends SiteController
         //дописываем модель коммента при авторизационном входе
         if ($user){
             $comment->user_id = $user->id;
+            $comment->name = $user->name;
+            $comment->email = $user->email;
         }
         //Формируем модель статьи, через которую записываем коммент
         $post = Article::find($data['article_id']);
