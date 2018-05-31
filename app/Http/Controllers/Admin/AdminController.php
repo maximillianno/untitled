@@ -9,9 +9,10 @@ use Lavary\Menu\Menu;
 
 class AdminController extends Controller
 {
-    //
+    //портфолио репозиторий
     protected $p_rep;
 
+    //артиклс репозиторий
     protected $a_rep;
 
     protected $user;
@@ -41,6 +42,7 @@ class AdminController extends Controller
 
     /**
      * Method
+     * @throws \Throwable
      */
     public function renderOutput()
     {
@@ -53,11 +55,12 @@ class AdminController extends Controller
         try {
             $navigation = view(env('THEME') . '.admin.navigation')->with(['menu' => $menu])->render();
         } catch (\Throwable $e) {
+            $navigation = view(env('THEME') . '.admin.navigation')->with(['menu' => $menu])->render();
         }
         $this->vars = array_add($this->vars, 'navigation', $navigation);
 
         //рендерим контент если есть
-        if ($this->content){
+        if (isset($this->content)){
             $this->vars = array_add($this->vars, 'content', $this->content);
         }
 
@@ -82,7 +85,7 @@ class AdminController extends Controller
             $menu->add('Портфолио', ['route' => 'admin.articles.index']);
             $menu->add('Меню', ['route' => 'admin.articles.index']);
             $menu->add('Пользователи', ['route' => 'admin.articles.index']);
-            $menu->add('Привелегии', ['route' => 'admin.articles.index']);
+            $menu->add('Привелегии', ['route' => 'admin.permissions.index']);
         });
     }
 

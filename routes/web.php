@@ -48,4 +48,5 @@ Route::match( ['get', 'post'],'contacts',['uses' => 'ContactController@index', '
 Route::name('admin.')->prefix('admin')->middleware(['auth'])->group(function () {
     Route::get('/', ['uses' => 'Admin\IndexController@index', 'as' => 'admin_index']);
     Route::resource('articles', 'Admin\ArticlesController');
+    Route::resource('permissions', 'Admin\PermissionsController');
 });

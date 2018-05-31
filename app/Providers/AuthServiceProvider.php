@@ -38,6 +38,12 @@ class AuthServiceProvider extends ServiceProvider
             return $user->canDo('VIEW_ADMIN_ARTICLES');
         });
 
+        //для доступа к admin.permissions
+        \Gate::define('EDIT_USERS', function ($user){
+
+            return $user->canDo('EDIT_USERS');
+        });
+
         //VIEW_ADMIN_ARTICLES
     }
 }

@@ -139,7 +139,7 @@ class ArticlesController extends AdminController
         return $this->renderOutput();
 
 
-        dd($article);
+
     }
 
     /**
