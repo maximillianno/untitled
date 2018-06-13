@@ -83,7 +83,7 @@ class AdminController extends Controller
         return (new \Lavary\Menu\Menu)->make('admin', function($menu)  {
             $menu->add('Статьи', ['route' => 'admin.articles.index']);
             $menu->add('Портфолио', ['route' => 'admin.articles.index']);
-            $menu->add('Меню', ['route' => 'admin.articles.index']);
+            $menu->add('Меню', ['route' => 'admin.menus.index']);
             $menu->add('Пользователи', ['route' => 'admin.articles.index']);
             $menu->add('Привелегии', ['route' => 'admin.permissions.index']);
         });
