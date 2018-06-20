@@ -54,6 +54,21 @@ class MenuRepository extends Repository
 
                         $data['path'] = route('articlesCat', ['cat_alias' => $request->input('category_alias')]);
                     }
+                } else if ($request->input('article_alias')){
+                    $data['path'] = route('articles.show', ['alias' => $request->input('article_alias')]);
+                }
+
+                break;
+            //Ссылка на портфолио
+            case "portfolioLink":
+                //ссылка на корень
+                if ($request->input('filter_alias')){
+                    if($request->input('filter_alias') == 'parent'){
+                        $data['path'] = route('portfolios.index');
+                    }
+                    //ссылка на конкретное портфолио
+                } else if($request->input('portfolio_alias')){
+                    $data['path'] = route('portfolios.show', ['alias' => $request->input('portfolio_alias')]);
                 }
 
                 break;
