@@ -34,9 +34,9 @@ class RouteServiceProvider extends ServiceProvider
         $this->bind('article', function ($value){
             return Article::where('alias', $value)->first();
         });
-//        $this->bind('menus', function($value){
-//            return Menu::where('id', $value)->first();
-//        });
+        $this->bind('menus', function($value){
+            return Menu::where('id', $value)->first();
+        });
 //        $this->bind('users', function($value){
 //           return User::find($value);
 //        });
