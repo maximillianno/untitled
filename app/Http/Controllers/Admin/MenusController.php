@@ -261,9 +261,15 @@ class MenusController extends AdminController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(MenusRequest $request, Menu $menu)
     {
         //
+        $result = $this->m_rep->updateMenu($request, $menu);
+        if (is_array($result) && !empty($result['error'])){
+            return back()->with($result);
+        }
+
+        return redirect('/admin')->with($result);
     }
 
     /**
@@ -272,9 +278,15 @@ class MenusController extends AdminController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Menu $menu)
     {
         //
+        $result = $this->m_rep->deleteMenu($menu);
+        if (is_array($result) && !empty($result['error'])){
+            return back()->with($result);
+        }
+
+        return redirect('/admin')->with($result);
     }
 
     /**
