@@ -65,6 +65,7 @@ class AdminController extends Controller
         }
 
 
+
         //рендерим футер и добавляем в переменные
         try {
             $footer = view(env('THEME') . '.admin.footer')->render();
@@ -84,7 +85,7 @@ class AdminController extends Controller
             $menu->add('Статьи', ['route' => 'admin.articles.index']);
             $menu->add('Портфолио', ['route' => 'admin.articles.index']);
             $menu->add('Меню', ['route' => 'admin.menus.index']);
-            $menu->add('Пользователи', ['route' => 'admin.articles.index']);
+            $menu->add('Пользователи', ['route' => 'admin.users.index']);
             $menu->add('Привелегии', ['route' => 'admin.permissions.index']);
         });
     }

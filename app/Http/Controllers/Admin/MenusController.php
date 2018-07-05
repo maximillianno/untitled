@@ -20,7 +20,8 @@ class MenusController extends AdminController
      */
     protected $m_rep;
 
-    public function __construct(MenuRepository $menusRepository, ArticlesRepository $articlesRepository, PortfolioRepository $portfolioRepository)
+    public function __construct(MenuRepository $menusRepository, ArticlesRepository $articlesRepository,
+                                PortfolioRepository $portfolioRepository)
     {
         parent::__construct();
         $this->m_rep = $menusRepository;
